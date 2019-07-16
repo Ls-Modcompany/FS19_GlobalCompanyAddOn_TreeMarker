@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<modDesc descVersion="44">
+    <author>LS-Modcompany / kevink98, Eribus</author>
+    <version>1.0.0.0</version>
+	
+    <title>
+		<en>GlobalCompany Addon TreeMarker</en>
+    </title>
+	
+	<description>
+		<en><![CDATA[bla]]></en>
+		<de><![CDATA[bla]]></de>
+	</description>	
+	
+	<iconFilename>GC_AddOnTreeMarker.dds</iconFilename>
+	<multiplayer supported="true"/>
+
+    <globalCompany minimumVersion="1.0.0.0">
+        <customClasses>
+            <customClass name="GC_AddOnTreeMarker"/>
+        </customClasses>
+    </globalCompany>
+
+	<l10n>
+		<text name="function_spray_x">
+			<en><![CDATA[]]></en>
+			<de><![CDATA[Sprüdose mit roter Farbe. Es wird ein 'X' gesprüht. Dies kennzeichnet ein Baum, der gefällt werden muss.]]></de>
+		</text>	
+		<text name="function_spray_pl">
+			<en><![CDATA[]]></en>
+			<de><![CDATA[Sprüdose mit grüner Farbe. Es wird ein 'PL' gesprüht. Dies kennzeichnet eine Region, in der neue Bäumde gepflanzt werden sollen.]]></de>
+		</text>	
+		<text name="function_spray_st">
+			<en><![CDATA[]]></en>
+			<de><![CDATA[Sprüdose mit weißer Farbe. Es wird ein 'ST' gesprüht. Dies kennzeichnet eine Region, in der eine Rückegasse erstellt werden soll.]]></de>
+		</text>		
+	</l10n>	
+		
+    <extraSourceFiles>
+        <sourceFile filename="GC_Checker.lua" />
+        <sourceFile filename="GC_AddOnTreeMarker.lua" />
+    </extraSourceFiles>
+    
+    <storeItems>
+        <storeItem xmlFilename="marker1.xml" />
+        <storeItem xmlFilename="marker2.xml" />
+        <storeItem xmlFilename="marker3.xml" />
+    </storeItems>
+</modDesc>

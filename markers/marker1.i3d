@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="stihlMS261" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="8.1.0"/>
+  </Asset>
+
+  <Files>
+  </Files>
+
+
+  <Materials>
+    <Material name="UnnamedMaterial" materialId="4" diffuseColor="1 1 1 1">
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="marker1.i3d.shapes">
+  </Shapes>
+
+
+  <Dynamics>
+  </Dynamics>
+
+  <Scene>
+    <TransformGroup name="marker" nodeId="7">
+      <TransformGroup name="graphics" translation="-7.99361e-17 8.88178e-17 0" rotation="0 0 -180" nodeId="8">
+        <TransformGroup name="handNode" translation="0.0482633 0.168119 -0.0733534" rotation="0 -10.7883 0" nodeId="9"/>
+        <TransformGroup name="leftHandTarget" nodeId="10"/>
+        <Shape shapeId="1" name="marker" translation="0 0 -0.00025774" scale="0.1 0.2 0.1" nodeId="11" materialIds="4" distanceBlending="false"/>
+      </TransformGroup>
+    </TransformGroup>
+  </Scene>
+
+</i3D>

@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<handTool>
+    <storeData>
+        <name>
+			<de>Sprühdose: ST</de>
+			<en>Spraycan: ST</en>
+		</name>
+        <functions>
+            <function>$l10n_function_spray_st</function>
+        </functions>
+        <image>store.png</image>
+        <price>500</price>
+        <lifetime>0</lifetime>
+        <rotation>0</rotation>
+        <brand>LIZARD</brand>
+        <canBeSold>false</canBeSold>
+        <showInStore>true</showInStore>
+        <allowLeasing>false</allowLeasing>
+        <category>wood</category>
+        <species>handTool</species>
+    </storeData>
+
+    <handToolType type="st">GC_AddOnTreeMarkerHandTool</handToolType>
+    <filename>markers/marker1.i3d</filename>
+    
+    <handNode>
+        <firstPerson position="0.20 -0.15 -0.4" rotation="17 20 0" />
+        <thirdPerson position="-0.2 -0.03 0.0" rotation="0 180 270" />
+    </handNode>
+
+    <sounds>
+        <onActivateSound file="sounds/schuetteln.wav" linkNode="0>" innerRadius="5.0" outerRadius="20.0" >
+            <volume indoor="0.80" outdoor="1.00" >
+                <speedModifier speed="0.00" percentage="0.00" />
+                <speedModifier speed="1.00" percentage="1.00" />
+            </volume>
+            <pitch indoor="1.00" outdoor="1.00" >
+                <loadModifier load="0.00" percentage="1.00" />
+                <loadModifier load="1.00" percentage="1.30" />
+            </pitch>
+            <lowpassGain indoor="0.50" outdoor="1.00" />
+        </onActivateSound>
+        <onMark file="sounds/spray.wav" linkNode="0>" innerRadius="5.0" outerRadius="20.0" >
+            <volume indoor="0.80" outdoor="1.00" >
+                <speedModifier speed="0.00" percentage="0.00" />
+                <speedModifier speed="1.00" percentage="1.00" />
+            </volume>
+            <pitch indoor="1.00" outdoor="1.00" >
+                <loadModifier load="0.00" percentage="1.00" />
+                <loadModifier load="1.00" percentage="1.30" />
+            </pitch>
+            <lowpassGain indoor="0.50" outdoor="1.00" />
+        </onMark>
+    </sounds>
+    
+    
+</handTool>

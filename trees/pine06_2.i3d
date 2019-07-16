@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="pine" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+
+  <Files>
+    <File fileId="1" filename="pineTrunk_6_2_diffuse.png" relativePath="true"/>
+    <File fileId="2" filename="$data/maps/trees/pineTrunk_normal.png" relativePath="true"/>
+    <File fileId="4" filename="$data/maps/trees/pineBranch_diffuse.png" relativePath="true"/>
+    <File fileId="5" filename="$data/maps/trees/pineBranch_normal.png" relativePath="true"/>
+    <File fileId="7" filename="$data/maps/trees/pine6LOD_diffuse.png" relativePath="true"/>
+    <File fileId="8" filename="$data/maps/trees/pine6LOD_normal.png" relativePath="true"/>
+    <File fileId="9" filename="$data/shaders/treeBillboardShader.xml" relativePath="true"/>
+    <File fileId="6" filename="$data/shaders/treeBranchShader.xml" relativePath="true"/>
+    <File fileId="3" filename="$data/shaders/treeTrunkShader.xml" relativePath="true"/>
+  </Files>
+
+  <Materials>
+    <Material name="pineTrunk_mat" materialId="1" cosPower="100" specularColor="0 0 0" ambientColor="1 1 1" customShaderId="3">
+      <Texture fileId="1"/>
+      <Normalmap fileId="2"/>
+    </Material>
+    <Material name="pineBranch_mat" materialId="2" cosPower="100" specularColor="0 1 0" ambientColor="1 1 1" customShaderId="6">
+      <Texture fileId="4"/>
+      <Normalmap fileId="5"/>
+    </Material>
+    <Material name="pine6LOD_mat" materialId="3" cosPower="2" specularColor="0 0 0" ambientColor="1 1 1" customShaderId="9" customShaderVariation="billboard180">
+      <Texture fileId="7"/>
+      <Normalmap fileId="8"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="pine06.i3d.shapes">
+  </Shapes>
+
+  <Scene>
+    <TransformGroup name="pine_stage6" lodDistance="0 110" collision="false" clipDistance="599" nodeId="1">
+      <Shape name="LOD0" shapeId="1" static="true" density="0.47" collisionMask="16789538" splitType="2" splitUvs="0 0 1 0.064 1.8" castsShadows="true" receiveShadows="true" materialIds="1" clipDistance="500" nodeId="2">
+        <Shape name="LOD0Attachments" shapeId="2" castsShadows="true" receiveShadows="true" materialIds="2" clipDistance="500" nodeId="3"/>
+      </Shape>
+      <Shape name="LOD1" translation="6.31089e-32 -7.10543e-17 0" shapeId="3" castsShadows="true" receiveShadows="false" materialIds="3" clipDistance="1500" nodeId="4"/>
+    </TransformGroup>
+  </Scene>
+
+  <UserAttributes>
+  </UserAttributes>
+</i3D>
