@@ -16,7 +16,7 @@
 --
 --
 -- 	v1.0.0.0 (07.03.2019):
--- 		- initial fs19 (GtX)
+-- 		- initial fs19 ()
 --		- 'de' warning translation (aPuehri)
 --
 -- Notes:

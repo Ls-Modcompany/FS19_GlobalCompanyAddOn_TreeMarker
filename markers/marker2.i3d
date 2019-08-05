@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<i3D name="stihlMS261" version="1.6" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://i3d.giants.ch/schema/i3d-1.6.xsd">
+  <Asset>
+    <Export program="GIANTS Editor 64bit" version="8.1.0"/>
+  </Asset>
+
+  <Files>
+    <File fileId="4" filename="$data/shaders/uvScrollShader.xml"/>
+    <File fileId="3" filename="$data/shared/default_normal.dds"/>
+    <File fileId="1" filename="spray_green.dds"/>
+    <File fileId="2" filename="sprayeffect_green.dds"/>
+  </Files>
+
+
+  <Materials>
+    <Material name="lambert1" materialId="4">
+      <Texture fileId="1"/>
+    </Material>
+    <Material name="lambert1" materialId="17" customShaderId="4">
+      <Texture fileId="2"/>
+      <Normalmap fileId="3"/>
+      <CustomParameter name="offsetUV" value="0 0 0 0"/>
+    </Material>
+  </Materials>
+
+
+  <Shapes externalShapesFile="marker2.i3d.shapes">
+  </Shapes>
+
+
+  <Dynamics>
+  </Dynamics>
+
+  <Scene>
+    <TransformGroup name="marker" nodeId="8">
+      <TransformGroup name="graphics" translation="-7.99361e-17 8.88178e-17 0" rotation="0 0 -180" nodeId="9">
+        <TransformGroup name="handNode" translation="0.0482633 0.168119 -0.0733534" rotation="0 -10.7883 0" nodeId="10"/>
+        <TransformGroup name="leftHandTarget" nodeId="11"/>
+        <Shape shapeId="1" name="spraycan" rotation="0 -0 180" static="true" nodeId="12" materialIds="4" castsShadows="true" receiveShadows="true">
+          <Shape shapeId="2" name="sprayCan_nozzle" static="true" nodeId="13" materialIds="4" castsShadows="true" receiveShadows="true"/>
+          <Shape shapeId="3" name="effectMesh" translation="0 0.123969 -0.00476768" visibility="false" static="true" nodeId="28" materialIds="17" castsShadows="true" receiveShadows="true"/>
+        </Shape>
+      </TransformGroup>
+    </TransformGroup>
+  </Scene>
+
+</i3D>

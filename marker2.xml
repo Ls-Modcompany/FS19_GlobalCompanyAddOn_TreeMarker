@@ -8,11 +8,11 @@
         <functions>
             <function>$l10n_function_spray_pl</function>
         </functions>
-        <image>store.png</image>
+        <image>store_green.png</image>
         <price>500</price>
         <lifetime>0</lifetime>
         <rotation>0</rotation>
-        <brand>LIZARD</brand>
+        <brand>GCADDONSPRAYPAINT</brand>
         <canBeSold>false</canBeSold>
         <showInStore>true</showInStore>
         <allowLeasing>false</allowLeasing>
@@ -21,12 +21,18 @@
     </storeData>
 
     <handToolType type="pl">GC_AddOnTreeMarkerHandTool</handToolType>
-    <filename>markers/marker1.i3d</filename>
+    <filename>markers/marker2.i3d</filename>
     
     <handNode>
         <firstPerson position="0.20 -0.15 -0.4" rotation="17 20 0" />
         <thirdPerson position="-0.2 -0.03 0.0" rotation="0 180 270" />
     </handNode>
+
+    <animationNodeGroups>
+        <animationNodes>
+            <animationNode class="ScrollingAnimation" node="0|2|1" scrollSpeed="-8" scrollLength="0.532" shaderParameterName="offsetUV" shaderParameterComponent="1" turnOnFadeTime="0" turnOffFadeTime="0"/>						
+        </animationNodes>						
+    </animationNodeGroups>
 
     <sounds>
         <onActivateSound file="sounds/schuetteln.wav" linkNode="0>" innerRadius="5.0" outerRadius="20.0" >
@@ -52,6 +58,4 @@
             <lowpassGain indoor="0.50" outdoor="1.00" />
         </onMark>
     </sounds>
-    
-    
 </handTool>

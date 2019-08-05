@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <globalCompany>		
     <treeTypeManager filename="maps_treeTypes.xml" />
-    <!--shopManager>
+    <shopManager>
         <addCategories>
-            <category type="PLACEABLE" name="globalCompanyPlaceable" title="$l10n_GC_category_globalCompanyPlaceable" image="store_globalCompanyPlaceable.dds" />
+            <category type="TOOL" name="globalCompanyAddOnSprayPaint" title="$l10n_GlobalCompanyAddOn_TreeMarker_category_globalCompanyAddOnSprayPaint" image="store_spraycategory.dds" />
         </addCategories>
         
         <sortCategories>
-            <category type="PLACEABLE" name="globalCompanyPlaceable" after="containers" />
+            <category type="TOOL" name="globalCompanyAddOnSprayPaint" after="wood" />
         </sortCategories>
-    </shopManager-->
 
-
+        <changeCategory>
+            <item xmlFilename="marker1.xml" category="globalCompanyAddOnSprayPaint" />
+            <item xmlFilename="marker2.xml" category="globalCompanyAddOnSprayPaint" />
+            <item xmlFilename="marker3.xml" category="globalCompanyAddOnSprayPaint" />
+        </changeCategory>	
+    </shopManager>
 </globalCompany>

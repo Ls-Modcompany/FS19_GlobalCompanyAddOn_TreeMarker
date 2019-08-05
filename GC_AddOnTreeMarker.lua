@@ -173,6 +173,11 @@ function GC_AddOnTreeMarkerHandTool:load(xmlFilename, player)
 		self.type = GC_AddOnTreeMarker.MARKER_X;
 	end;
 
+	local animationNodes = g_company.animationNodes:new(self.isServer, self.isClient)
+	if animationNodes:load(self.rootNode, self, xmlFile, "handTool") then
+		self.animationNodes = animationNodes;
+	end
+
 	self.canMark = false;
 	self.soundRunStart = 0;  
 	self.soundRunMark = 0;    
@@ -194,6 +199,7 @@ end;
 
 function GC_AddOnTreeMarkerHandTool:delete()
 
+	self.animationNodes:delete();
 	g_soundManager:deleteSamples(self.sounds)
 	self:unregister();
 	
@@ -232,6 +238,8 @@ function GC_AddOnTreeMarkerHandTool:update(dt, allowInput)
 			self.soundRunMark = math.max(self.soundRunMark - dt, 0);
 			if self.soundRunMark == 0 then
 				g_soundManager:stopSample(self.sounds.onMark);
+				self:toggleEffect();
+				self.animationNodes:setAnimationNodesState(false);
 			end;
 		end;
 	end;
@@ -267,9 +275,21 @@ function GC_AddOnTreeMarkerHandTool:startEffects_Event(data, noEventSend)
 	if g_company.addOnTreeMarker.isClient then
 		
 		g_soundManager:playSample(self.sounds.onMark);
+		self.animationNodes:setAnimationNodesState(true);
+		self:toggleEffect();
 		self.soundRunMark = 3000;
 		
 	end;
 end;
+
+function GC_AddOnTreeMarkerHandTool:toggleEffect()
+	if self.animationNodes ~= nil then
+		for _,group in pairs(self.animationNodes.standardAnimations) do
+			for _,anim in pairs(group.animationNodes) do				
+				setVisibility(anim.node, not getVisibility(anim.node));
+			end;
+		end;
+	end;
+end
 
 registerHandTool("GC_AddOnTreeMarkerHandTool", GC_AddOnTreeMarkerHandTool);

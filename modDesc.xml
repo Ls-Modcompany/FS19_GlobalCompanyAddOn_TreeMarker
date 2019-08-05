@@ -35,6 +35,10 @@
 			<de><![CDATA[Sprüdose mit weißer Farbe. Es wird ein 'ST' gesprüht. Dies kennzeichnet eine Region, in der eine Rückegasse erstellt werden soll.]]></de>
 		</text>		
 	</l10n>	
+
+    <brands>
+        <brand name="GCADDONSPRAYPAINT" title="GlobalCompany SprayPaint" image="brand_spray.dds"/>
+    </brands>
 		
     <extraSourceFiles>
         <sourceFile filename="GC_Checker.lua" />
