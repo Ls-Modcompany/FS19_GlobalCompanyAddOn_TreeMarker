@@ -1,7 +1,7 @@
 --
 -- GC_Checker
 --
--- @Interface: --
+-- @Interface: 1.4.1.0 b5332
 -- @Author: LS-Modcompany
 -- @Date: 24.04.2019
 -- @Version: 1.1.0.0

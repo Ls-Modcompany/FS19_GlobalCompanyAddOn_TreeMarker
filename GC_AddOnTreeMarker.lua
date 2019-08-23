@@ -118,18 +118,18 @@ function GC_AddOnTreeMarker:markTree(tree, markerType)
 	if not self.isServer then
 		return;
 	end;
-	
 	local supTrees = self.supportetTrees[getName(tree)];
 	local treeType = supTrees[markerType]
 
-	if tree ~= 0 and type(tree) == "number" and supTrees ~= nil and treeType ~= nil then
-				
+	if tree ~= 0 and type(tree) == "number" and supTrees ~= nil and treeType ~= nil then				
 		local x,y,z = getWorldTranslation(tree);
 		local rx,ry,rz = getRotation(tree);
-		
+
 		local growthStateI = tonumber(string.sub(getName(tree), string.len(getName(tree))))
-		local growthState = (growthStateI) / ((table.getn(g_treePlantManager.nameToTreeType["TREEFIR"].treeFilenames)));
-		
+		local growthState = growthStateI / ((table.getn(g_treePlantManager.nameToTreeType["TREEFIR"].treeFilenames)-1));
+
+		print(string.format("markTree: stateI: %s state: %s", growthStateI, growthState))
+
 		g_treePlantManager:plantTree(g_treePlantManager.nameToTreeType[treeType:upper()].index, x, y, z, rx, ry, rz, growthState, growthStateI + 1, true, nil)
 		delete(tree);		
 		g_treePlantManager:cleanupDeletedTrees()
@@ -147,7 +147,9 @@ function GC_AddOnTreeMarkerHandTool:new(isServer, isClient, customMt)
 		mt = GC_AddOnTreeMarkerHandTool_mt;
 	end
 
-	return HandTool:new(isServer, isClient, mt);	
+	local self = HandTool:new(isServer, isClient, mt);	
+
+	return self;
 end;
 
 function GC_AddOnTreeMarkerHandTool:load(xmlFilename, player)
@@ -173,24 +175,22 @@ function GC_AddOnTreeMarkerHandTool:load(xmlFilename, player)
 		self.type = GC_AddOnTreeMarker.MARKER_X;
 	end;
 
-	local animationNodes = g_company.animationNodes:new(self.isServer, self.isClient)
-	if animationNodes:load(self.rootNode, self, xmlFile, "handTool") then
-		self.animationNodes = animationNodes;
-	end
-
 	self.canMark = false;
+	self.setCanMarkIfCan = false;
 	self.soundRunStart = 0;  
 	self.soundRunMark = 0;    
 	
-	self:register(false);
-
-	self.eventId_startMarkTree = g_company.eventManager:registerEvent(self, self.startMarkTree_Event, true);
-	self.eventId_startEffects = g_company.eventManager:registerEvent(self, self.startEffects_Event, true);
+	--self:register(false);
 
 	if g_company.addOnTreeMarker.isClient then
 		self.sounds = {};
 		self.sounds.onActivateSound = g_soundManager:loadSampleFromXML(xmlFile, "handTool.sounds", "onActivateSound", self.baseDirectory, self.rootNode, 0, AudioGroup.VEHICLE, nil, nil);
 		self.sounds.onMark = g_soundManager:loadSampleFromXML(xmlFile, "handTool.sounds", "onMark", self.baseDirectory, self.rootNode, 0, AudioGroup.VEHICLE, nil, nil);
+			
+		local animationNodes = g_company.animationNodes:new(self.isServer, self.isClient)
+		if animationNodes:load(self.rootNode, self, xmlFile, "handTool") then
+			self.animationNodes = animationNodes;
+		end	
 	end;
 	
 	delete(xmlFile);
@@ -199,9 +199,13 @@ end;
 
 function GC_AddOnTreeMarkerHandTool:delete()
 
-	self.animationNodes:delete();
-	g_soundManager:deleteSamples(self.sounds)
-	self:unregister();
+	if self.animationNodes ~= nil then
+		self.animationNodes:delete();
+	end;
+	if self.sounds ~= nil then
+		g_soundManager:deleteSamples(self.sounds)
+	end;
+	--self:unregister();
 	
     GC_AddOnTreeMarkerHandTool:superClass().delete(self);
 end;
@@ -210,76 +214,96 @@ end;
 function GC_AddOnTreeMarkerHandTool:onActivate(allowInput)
 	GC_AddOnTreeMarkerHandTool:superClass().onActivate(self);
 	
-	g_soundManager:playSample(self.sounds.onActivateSound);
+	if self.sounds ~= nil then
+		g_soundManager:playSample(self.sounds.onActivateSound);
+	end;
 	self.soundRunStart = 3000;   
 	self.soundRunMark = 0;
 
 	self.canMark = true;
+	self.activatePressed = false;
 end;
 
 function GC_AddOnTreeMarkerHandTool:onDeactivate(allowInput)
     GC_AddOnTreeMarkerHandTool:superClass().onDeactivate(self);
-	self.canMark = false;
-	g_soundManager:stopSample(self.sounds.onActivateSound);
-	g_soundManager:stopSample(self.sounds.onMark);
+	--self.canMark = false;
+	if self.sounds ~= nil then
+		g_soundManager:stopSample(self.sounds.onActivateSound);
+		g_soundManager:stopSample(self.sounds.onMark);
+	end;
+	if self.animationNodes ~= nil then
+		self.animationNodes:setAnimationNodesState(false);
+	end;
 end;
 
 
 function GC_AddOnTreeMarkerHandTool:update(dt, allowInput)
+	GC_AddOnTreeMarkerHandTool:superClass().update(self, dt, allowInput);
+	
 	if g_company.addOnTreeMarker.isClient then
 		if self.soundRunStart > 0 then
 			self.soundRunStart = math.max(self.soundRunStart - dt, 0);
 			if self.soundRunStart == 0 then
-				g_soundManager:stopSample(self.sounds.onActivateSound);
+				if self.sounds ~= nil then
+					g_soundManager:stopSample(self.sounds.onActivateSound);
+				end;
 			end;
 		end;
-
+		
+		if not self.activatePressed and self.setCanMarkIfCan then
+			self.canMark = true;
+		end;
+		
 		if self.soundRunMark > 0 then
 			self.soundRunMark = math.max(self.soundRunMark - dt, 0);
 			if self.soundRunMark == 0 then
-				g_soundManager:stopSample(self.sounds.onMark);
+				if self.sounds ~= nil then
+					g_soundManager:stopSample(self.sounds.onMark);
+				end;
 				self:toggleEffect();
-				self.animationNodes:setAnimationNodesState(false);
+				if self.animationNodes ~= nil then
+					self.animationNodes:setAnimationNodesState(false);
+				end;
+				self.canMark = true;
 			end;
-		end;
-	end;
-
-	if allowInput ~= nil then
-		GC_AddOnTreeMarkerHandTool:superClass().update(self, dt, allowInput);
-		
-		if self.activatePressed and self.canMark and g_company.addOnTreeMarker.isClient then			
-			self:startMarkTree(g_currentMission.player.rootNode);			
-			self.activatePressed = false;
-			--self.canMark = false;
-		end;		
+		elseif allowInput and self.activatePressed and self.canMark then			
+			local x,y,z = getWorldTranslation(g_currentMission.player.rootNode);
+			self.canMark = false;
+			self:startSearchTree(x,y,z);   
+		end;	
+		self.activatePressed = false;	
 	end;	
 end;
 
-function GC_AddOnTreeMarkerHandTool:startMarkTree(x,y,z, noEventSend)
-	self:startMarkTree_Event({x,y,z}, noEventSend);   
-end;
-
-function GC_AddOnTreeMarkerHandTool:startMarkTree_Event(data, noEventSend)
-	g_company.eventManager:createEvent(self.eventId_startMarkTree, data, false, noEventSend);
-	if self.isServer then
-		local nextTree = g_company.addOnTreeMarker:findNextTree(getTranslation(data[1], data[2], data[3]));
+function GC_AddOnTreeMarkerHandTool:startSearchTree(x,y,z, noEventSend)
+	GC_AddOnTreeMarkerStartSearchTreeEvent.sendEvent(self.player, x,y,z, self.type, noEventSend);
+	
+	if not g_company.addOnTreeMarker.isMultiplayer then	
+		local nextTree = g_company.addOnTreeMarker:findNextTree(x,y,z);
 		if nextTree ~= nil then
 			g_company.addOnTreeMarker:markTree(nextTree, self.type);
-			self:startEffects_Event({}, noEventSend);
+			self:startMarkTree();
+		else
+			self:findNoTree();
 		end;
 	end;
 end;
 
-function GC_AddOnTreeMarkerHandTool:startEffects_Event(data, noEventSend)
-	g_company.eventManager:createEvent(self.eventId_startEffects, data, false, noEventSend);
-	if g_company.addOnTreeMarker.isClient then
-		
-		g_soundManager:playSample(self.sounds.onMark);
-		self.animationNodes:setAnimationNodesState(true);
+function GC_AddOnTreeMarkerHandTool:startMarkTree()
+	if g_company.addOnTreeMarker.isClient then		
+		if self.sounds ~= nil then
+			g_soundManager:playSample(self.sounds.onMark);
+		end;
+		if self.animationNodes ~= nil then
+			self.animationNodes:setAnimationNodesState(true);
+		end;
 		self:toggleEffect();
-		self.soundRunMark = 3000;
-		
+		self.soundRunMark = 3000;		
 	end;
+end;
+
+function GC_AddOnTreeMarkerHandTool:findNoTree()
+	self.setCanMarkIfCan = true;
 end;
 
 function GC_AddOnTreeMarkerHandTool:toggleEffect()
@@ -293,3 +317,110 @@ function GC_AddOnTreeMarkerHandTool:toggleEffect()
 end
 
 registerHandTool("GC_AddOnTreeMarkerHandTool", GC_AddOnTreeMarkerHandTool);
+
+
+
+GC_AddOnTreeMarkerStartSearchTreeEvent = {};
+GC_AddOnTreeMarkerStartSearchTreeEvent_mt = Class(GC_AddOnTreeMarkerStartSearchTreeEvent, Event);
+
+InitEventClass(GC_AddOnTreeMarkerStartSearchTreeEvent, "GC_AddOnTreeMarkerStartSearchTreeEvent");
+
+function GC_AddOnTreeMarkerStartSearchTreeEvent:emptyNew()
+	local self = Event:new(GC_AddOnTreeMarkerStartSearchTreeEvent_mt)
+	return self;
+end;
+
+function GC_AddOnTreeMarkerStartSearchTreeEvent:new(player, x,y,z, type)
+	local self = GC_AddOnTreeMarkerStartSearchTreeEvent:emptyNew()
+    self.player = player;
+	self.x = x;
+	self.y = y;
+	self.z = z;
+	self.type = type;
+	return self
+end;
+
+function GC_AddOnTreeMarkerStartSearchTreeEvent:readStream(streamId, connection)
+	self.player = NetworkUtil.readNodeObject(streamId);
+	self.x = streamReadFloat32(streamId);
+	self.y = streamReadFloat32(streamId);
+	self.z = streamReadFloat32(streamId);
+	self.type = streamReadInt8(streamId);
+	self:run(connection);
+end;
+
+function GC_AddOnTreeMarkerStartSearchTreeEvent:writeStream(streamId, connection)
+	NetworkUtil.writeNodeObject(streamId, self.player);
+	streamWriteFloat32(streamId, self.x);
+	streamWriteFloat32(streamId, self.y);
+	streamWriteFloat32(streamId, self.z);
+	streamWriteInt8(streamId, self.type);
+end;
+
+function GC_AddOnTreeMarkerStartSearchTreeEvent:run(connection)
+
+	if not connection:getIsServer() then		
+		local nextTree = g_company.addOnTreeMarker:findNextTree(self.x, self.y, self.z);
+		if nextTree ~= nil then
+			g_company.addOnTreeMarker:markTree(nextTree, self.type);			
+			g_server:broadcastEvent(GC_AddOnTreeMarkerClientEffectsEvent:new(self.player, true), nil, nil, self.player);
+		else
+			g_server:broadcastEvent(GC_AddOnTreeMarkerClientEffectsEvent:new(self.player, false), nil, nil, self.player);
+		end;
+	end;
+end;
+
+function GC_AddOnTreeMarkerStartSearchTreeEvent.sendEvent(player, x,y,z, type, noEventSend)
+    local currentTool = player.baseInformation.currentHandtool;
+    if currentTool ~= nil and currentTool.startMarkTree ~= nil then
+        if noEventSend == nil or noEventSend == false then
+            if g_server ~= nil then
+                g_server:broadcastEvent(GC_AddOnTreeMarkerStartSearchTreeEvent:new(player, x,y,z, type), nil, nil, player);
+            else
+                g_client:getServerConnection():sendEvent(GC_AddOnTreeMarkerStartSearchTreeEvent:new(player, x,y,z, type));
+            end;
+        end;
+    end;
+end;
+
+
+GC_AddOnTreeMarkerClientEffectsEvent = {};
+GC_AddOnTreeMarkerClientEffectsEvent_mt = Class(GC_AddOnTreeMarkerClientEffectsEvent, Event);
+
+InitEventClass(GC_AddOnTreeMarkerClientEffectsEvent, "GC_AddOnTreeMarkerClientEffectsEvent");
+
+function GC_AddOnTreeMarkerClientEffectsEvent:emptyNew()
+	return Event:new(GC_AddOnTreeMarkerClientEffectsEvent_mt);
+end;
+
+function GC_AddOnTreeMarkerClientEffectsEvent:new(player, state)
+	local self = GC_AddOnTreeMarkerClientEffectsEvent:emptyNew()
+    self.player = player;
+    self.state = state;
+	return self;
+end;
+
+function GC_AddOnTreeMarkerClientEffectsEvent:readStream(streamId, connection)
+	self.player = NetworkUtil.readNodeObject(streamId);
+	self.state = streamReadBool(streamId);
+	self:run(connection);
+end;
+
+function GC_AddOnTreeMarkerClientEffectsEvent:writeStream(streamId, connection) 
+	NetworkUtil.writeNodeObject(streamId, self.player);
+	streamWriteBool(streamId, self.state);
+end;
+
+function GC_AddOnTreeMarkerClientEffectsEvent:run(connection)
+	local currentTool = self.player.baseInformation.currentHandtool;
+    if self.state then
+		if currentTool ~= nil and currentTool.startMarkTree ~= nil then
+			currentTool:startMarkTree();
+		end;
+	else
+		if currentTool ~= nil and currentTool.findNoTree ~= nil then
+			currentTool:findNoTree();
+		end;
+	end;
+end;
+

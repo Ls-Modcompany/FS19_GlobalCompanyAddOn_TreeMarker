@@ -29,6 +29,7 @@
             <stage filename="trees/pine06_2.i3d" />
         </treeType>
         <treeType name="treeFir5" nameI18N="ui_treeFir" growthTimeHours="240" >
+            <stage filename="$data/objects/pallets/treeSaplingPallet/treeSapling.i3d" />
             <stage filename="trees/spruce01_0.i3d" />
             <stage filename="trees/spruce02_0.i3d" />
             <stage filename="trees/spruce03_0.i3d" />
@@ -36,6 +37,7 @@
             <stage filename="trees/spruce05_0.i3d" />
         </treeType>
         <treeType name="treeFir6" nameI18N="ui_treeFir" growthTimeHours="240" >
+            <stage filename="$data/objects/pallets/treeSaplingPallet/treeSapling.i3d" />
             <stage filename="trees/spruce01_1.i3d" />
             <stage filename="trees/spruce02_1.i3d" />
             <stage filename="trees/spruce03_1.i3d" />
@@ -43,6 +45,7 @@
             <stage filename="trees/spruce05_1.i3d" />
         </treeType>
         <treeType name="treeFir7" nameI18N="ui_treeFir" growthTimeHours="240" >
+            <stage filename="$data/objects/pallets/treeSaplingPallet/treeSapling.i3d" />
             <stage filename="trees/spruce01_2.i3d" />
             <stage filename="trees/spruce02_2.i3d" />
             <stage filename="trees/spruce03_2.i3d" />
