@@ -8,14 +8,26 @@
     </title>
 	
 	<description>
-		<en><![CDATA[bla]]></en>
-		<de><![CDATA[bla]]></de>
+		<en><![CDATA[Bark beetles, fallen timber or firewood in the case of urgency?
+Then pique your interest in being a Ranger!
+
+You can use this mod to mark all coniferous trees with three different markings. Buy the spray cans you need in the shop!
+
+Information: Mod is only usable in combination with GlobalCompany!]]></en>
+		<de><![CDATA[Borkenkäfer, Schadholz oder dringenden Brennholzbedarf?
+
+
+Dann weck den Förster in dir!
+
+Du kannst mit diesem Mod alle Nadelholzbäume mit drei verschiedenen Kennzeichnungen markieren. Kaufe dir dazu im Shop die benötigten Spraydosen!
+
+Information: Mod nur in Verbindung mit GlobalCompany spielbar!]]></de>
 	</description>	
 	
 	<iconFilename>GC_AddOnTreeMarker.dds</iconFilename>
 	<multiplayer supported="true"/>
 
-    <globalCompany minimumVersion="1.0.0.0">
+    <globalCompany minimumVersion="1.1.0.0">
         <customClasses>
             <customClass name="GC_AddOnTreeMarker"/>
         </customClasses>

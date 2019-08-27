@@ -126,9 +126,7 @@ function GC_AddOnTreeMarker:markTree(tree, markerType)
 		local rx,ry,rz = getRotation(tree);
 
 		local growthStateI = tonumber(string.sub(getName(tree), string.len(getName(tree))))
-		local growthState = growthStateI / ((table.getn(g_treePlantManager.nameToTreeType["TREEFIR"].treeFilenames)-1));
-
-		print(string.format("markTree: stateI: %s state: %s", growthStateI, growthState))
+		local growthState = growthStateI / ((table.getn(g_treePlantManager.nameToTreeType[string.upper(treeType)].treeFilenames)-1));
 
 		g_treePlantManager:plantTree(g_treePlantManager.nameToTreeType[treeType:upper()].index, x, y, z, rx, ry, rz, growthState, growthStateI + 1, true, nil)
 		delete(tree);		

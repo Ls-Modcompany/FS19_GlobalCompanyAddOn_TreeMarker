@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <l10n>
 	<elements>
-
-		<e k="GlobalCompanyAddOn_TreeMarker_category_globalCompanyAddOnSprayPaint" v="SprayPaint"/>	
-		
+		<e k="GlobalCompanyAddOn_TreeMarker_category_globalCompanyAddOnSprayPaint" v="SprayPaint"/>			
 	</elements>
 </l10n>
